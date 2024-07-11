@@ -985,3 +985,139 @@ ARI_avar_optics1_design2_ARI=sum(ARI_optics1_design2_ARI)/100
 ARI_avar_optics2_design2_ARI=sum(ARI_optics2_design2_ARI)/100
 ARI_avar_ap1_design2_ARI=sum(ARI_ap1_design2_ARI)/100
 ARI_avar_ap2_design2_ARI=sum(ARI_ap2_design2_ARI)/100
+
+
+
+
+
+
+
+#---画ARI大小比较的直方图---#
+
+ARI_MFM_simu1_design1=rep(0,100)
+ARI_APcluster_simu1_design1=rep(0,100)
+ARI_DBSCAN_simu1_design1=rep(0,100)
+ARI_Kmeans_simu1_design1=rep(0,100)
+ARI_Model_based_simu1_design1=rep(0,100)
+ARI_Optics_simu1_design1=rep(0,100)
+
+ARI_MFM_simu2_design1=rep(0,100)
+ARI_APcluster_simu2_design1=rep(0,100)
+ARI_DBSCAN_simu2_design1=rep(0,100)
+ARI_Kmeans_simu2_design1=rep(0,100)
+ARI_Model_based_simu2_design1=rep(0,100)
+ARI_Optics_simu2_design1=rep(0,100)
+
+ARI_MFM_simu1_design2=rep(0,100)
+ARI_APcluster_simu1_design2=rep(0,100)
+ARI_DBSCAN_simu1_design2=rep(0,100)
+ARI_Kmeans_simu1_design2=rep(0,100)
+ARI_Model_based_simu1_design2=rep(0,100)
+ARI_Optics_simu1_design2=rep(0,100)
+
+ARI_MFM_simu2_design2=rep(0,100)
+ARI_APcluster_simu2_design2=rep(0,100)
+ARI_DBSCAN_simu2_design2=rep(0,100)
+ARI_Kmeans_simu2_design2=rep(0,100)
+ARI_Model_based_simu2_design2=rep(0,100)
+ARI_Optics_simu2_design2=rep(0,100)
+
+#---画ARI对比图---#
+
+ARI1=cbind(ARI_MFM_simu1_design1,ARI_APcluster_simu1_design1,ARI_DBSCAN_simu1_design1,ARI_Kmeans_simu1_design1,ARI_Model_based_simu1_design1,ARI_Optics_simu1_design1)
+ARI1=as.data.frame(ARI1)
+colnames(ARI1)=c("MFM","APcluster","DBSCAN","Kmeans","Model-based","Optics")
+ARI1=melt(ARI1)
+ARI1$Setting="Design1"
+ARI1$index= "simulation1"
+colnames(ARI1)=c("method","value","Setting","index")
+
+ARI2=cbind(ARI_MFM_simu2_design1,ARI_APcluster_simu2_design1,ARI_DBSCAN_simu2_design1,ARI_Kmeans_simu2_design1,ARI_Model_based_simu2_design1,ARI_Optics_simu2_design1)
+ARI2=as.data.frame(ARI2)
+colnames(ARI2)=c("MFM","APcluster","DBSCAN","Kmeans","Model-based","Optics")
+ARI2=melt(ARI2)
+ARI2$Setting="Design1"
+ARI2$index= "simulation2"
+colnames(ARI2)=c("method","value","Setting","index")
+
+ARI3=cbind(ARI_MFM_simu1_design2,ARI_APcluster_simu1_design2,ARI_DBSCAN_simu1_design2,ARI_Kmeans_simu1_design2,ARI_Model_based_simu1_design2,ARI_Optics_simu1_design2)
+ARI3=as.data.frame(ARI3)
+colnames(ARI3)=c("MFM","APcluster","DBSCAN","Kmeans","Model-based","Optics")
+ARI3=melt(ARI3)
+ARI3$Setting="Design2"
+ARI3$index= "simulation1"
+colnames(ARI3)=c("method","value","Setting","index")
+
+ARI4=cbind(ARI_MFM_simu2_design2,ARI_APcluster_simu2_design2,ARI_DBSCAN_simu2_design2,ARI_Kmeans_simu2_design2,ARI_Model_based_simu2_design2,ARI_Optics_simu2_design2)
+ARI4=as.data.frame(ARI4)
+colnames(ARI4)=c("MFM","APcluster","DBSCAN","Kmeans","Model-based","Optics")
+ARI4=melt(ARI4)
+ARI4$Setting="Design2"
+ARI4$index= "simulation2"
+colnames(ARI4)=c("method","value","Setting","index")
+
+ARI=rbind(ARI1,ARI2,ARI3,ARI4)
+ARI=ggplot(ARI,aes(x=value))+
+  geom_bar(bins=100,stat="count",width = 0.5)+ 
+  scale_x_discrete(limits = c("equal","excess","deficiency"))+
+  theme_bw()+
+  facet_grid(Setting+index~method)+
+  labs(title="(b)",x ="Comparison of the size of ARI", y = "Frequency")
+
+
+
+#---画类别个数分布图---#
+
+#design1(simulation1)
+cluster_simu1_design1=cbind(cluster_CDMFM1_design1,cluster_CDMFM1_non_design1,cluster_ap1_design1,cluster_dbscan1_design1,cluster_kmeans1_design1,cluster_Mclust1_design1,cluster_optics1_design1)
+cluster_simu1_design1=as.data.frame(cluster_simu1_design1)
+colnames(cluster_simu1_design1)=c("CDMFM","MFM","APcluster","DBSCAN","Kmeans","Model-based","Optics")
+cluster_simu1_design1=melt(cluster_simu1_design1)
+cluster_simu1_design1$setting="Design1"
+cluster_simu1_design1$index="Simulation1"
+colnames(cluster_simu1_design1)=c("Method","value","setting","index")
+
+#design1(simulation2)
+cluster_simu2_design1=cbind(cluster_CDMFM2_design1,cluster_CDMFM2_non_design1,cluster_ap2_design1,cluster_dbscan2_design1,cluster_kmeans2_design1,cluster_Mclust2_design1,cluster_optics2_design1)
+cluster_simu2_design1=as.data.frame(cluster_simu2_design1)
+colnames(cluster_simu2_design1)=c("CDMFM","MFM","APcluster","DBSCAN","Kmeans","Model-based","Optics")
+cluster_simu2_design1=melt(cluster_simu2_design1)
+cluster_simu2_design1$setting="Design1"
+cluster_simu2_design1$index="Simulation2"
+colnames(cluster_simu2_design1)=c("Method","value","setting","index")
+
+#design2(simulation1)
+cluster_simu1_design2=cbind(cluster_CDMFM1_design2,cluster_CDMFM1_non_design2,cluster_ap1_design2,cluster_dbscan1_design2,cluster_kmeans1_design2,cluster_Mclust1_design2,cluster_optics1_design2)
+cluster_simu1_design2=as.data.frame(cluster_simu1_design2)
+colnames(cluster_simu1_design2)=c("CDMFM","MFM","APcluster","DBSCAN","Kmeans","Model-based","Optics")
+cluster_simu1_design2=melt(cluster_simu1_design2)
+cluster_simu1_design2$setting="Design2"
+cluster_simu1_design2$index="Simulation1"
+colnames(cluster_simu1_design2)=c("Method","value","setting","index")
+
+#design2(simulation2)
+cluster_simu2_design2=cbind(cluster_CDMFM2_design2,cluster_CDMFM2_non_design2,cluster_ap2_design2,cluster_dbscan2_design2,cluster_kmeans2_design2,cluster_Mclust2_design2,cluster_optics2_design2)
+cluster_simu2_design2=as.data.frame(cluster_simu2_design2)
+colnames(cluster_simu2_design2)=c("CDMFM","MFM","APcluster","DBSCAN","Kmeans","Model-based","Optics")
+cluster_simu2_design2=melt(cluster_simu2_design2)
+cluster_simu2_design2$setting="Design2"
+cluster_simu2_design2$index="Simulation2"
+colnames(cluster_simu2_design2)=c("Method","value","setting","index")
+
+#拼接4张图
+cluster=rbind(cluster_simu1_design1,cluster_simu2_design1,cluster_simu1_design2,cluster_simu2_design2)
+cluster=ggplot(cluster,aes(x=value))+
+  geom_histogram(bins=100,stat="count",colour = "#000000",fill=c("#666666"))+ 
+  scale_x_discrete(limits = c("1","2","3","4","5","6","7","8","9"))+
+  theme_bw()+
+  facet_grid(setting+index~Method)+
+  labs(x ="K", y = "Frequency")
+
+#将两幅拼接图放在一起
+cluster/ARI+plot_layout(heights = c(1, 1))
+
+#计算平均lambda1
+lambda1_avg_disjoint_simulation_data1=mean(lambda1_disjoint_simulation_data1)
+lambda1_avg_disjoint_simulation_data2=mean(lambda1_disjoint_simulation_data2)
+lambda1_avg_joint_simulation_data1=mean(lambda1_joint_simulation_data1)
+lambda1_avg_joint_simulation_data2=mean(lambda1_joint_simulation_data2)
